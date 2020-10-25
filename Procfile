@@ -1,2 +1,2 @@
 web: vendor/bin/heroku-php-apache2 public/
-worker: npm i socket.io && node server.js
+worker: npm install express && node server.js
