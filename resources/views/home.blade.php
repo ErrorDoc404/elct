@@ -15,6 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    @foreach ($users as $key => $user)
+                      <div class=".users" id="#user-{{ $user['id'] }}">{{ $user['name'] }}</div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -26,15 +29,21 @@
   <script>
     $(function(){
       let user_id = "{{ auth()->user()->id }}";
-      let ip_address = 'http://eelct.herokuapp.com';
+      let ip_address = '127.0.0.1';
       let socket_port = '3000'
       let socket = io(ip_address + ":" + socket_port);
 
       socket.on('connect', function(){
         socket.emit('user_connected',user_id);
+        let pika = $('#user-'+user_id);
+        console.log(pika);
+        pika.addClass('active');
       });
 
       socket.on('updateUserStatus', function(data) {
+        let $user = $('.users');
+        $user.addClass('bongo');
+        $user.attr('title', 'away');
         $.each(data, function(key, value){
           if(value !== null && value !== 0){
 
