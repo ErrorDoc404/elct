@@ -19,6 +19,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+      .online{
+        color: green;
+      }
+      .offline{
+        color: orangered;
+      }
+    </style>
 </head>
 <body>
     <div id="app">

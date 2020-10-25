@@ -9,6 +9,9 @@ var users = [];
 
 io.on('connection', function (socket)  {
     socket.on('disconnect', () => {
+      var i = users.indexOf('socket.id');
+      users.slice(i, 1, 0);
+      io.emit('updateUserOffline', users);
       console.log('user disconnected');
     });
 

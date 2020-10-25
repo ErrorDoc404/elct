@@ -16,7 +16,7 @@
 
                     {{ __('You are logged in!') }}
                     @foreach ($users as $key => $user)
-                      <div class=".users" id="#user-{{ $user['id'] }}">{{ $user['name'] }}</div>
+                      <div class="users users-{{ $user['id'] }}" id="user-{{ $user['id'] }}">{{ $user['name'] }}</div>
                     @endforeach
                 </div>
             </div>
@@ -35,21 +35,33 @@
 
       socket.on('connect', function(){
         socket.emit('user_connected',user_id);
-        let pika = $('#user-'+user_id);
-        console.log(pika);
-        pika.addClass('active');
       });
 
       socket.on('updateUserStatus', function(data) {
-        let $user = $('.users');
+        let $user = $('users');
         $user.addClass('bongo');
         $user.attr('title', 'away');
         $.each(data, function(key, value){
           if(value !== null && value !== 0){
-
+            alert(key);
+            $('#user-'+key).addClass('online');
           }
         });
       });
+
+      socket.on('updateUserOffline', function(data) {
+        let $user = $('users');
+        $user.addClass('bongo');
+        $user.attr('title', 'away');
+        $.each(data, function(key, value){
+          if(value !== null && value !== 0){
+            alert(key);
+            $('#user-'+key).addClass('offline');
+          }
+        });
+      });
+
+
     });
   </script>
 @endpush
