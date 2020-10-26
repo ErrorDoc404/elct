@@ -16,7 +16,7 @@
 
                     {{ __('You are logged in!') }}
                     @foreach ($users as $key => $user)
-                      <div class="users users-{{ $user['id'] }}" id="user-{{ $user['id'] }}">{{ $user['name'] }}</div>
+                      <div class="users users-{{ $user['id'] - 1 }}" id="user-{{ $user['id'] - 1 }}">{{ $user['name'] }}</div>
                     @endforeach
                 </div>
             </div>
@@ -28,8 +28,8 @@
 @push('scripts')
   <script>
     $(function(){
-      let user_id = "{{ auth()->user()->id }}";
-      let ip_address = '127.0.0.1';
+      let user_id = "{{ auth()->user()->id - 1 }}";
+      let ip_address = "{{ env('APP_URL') }}";
       let socket_port = '3000'
       let socket = io(ip_address + ":" + socket_port);
 
@@ -38,25 +38,13 @@
       });
 
       socket.on('updateUserStatus', function(data) {
-        let $user = $('users');
-        $user.addClass('bongo');
-        $user.attr('title', 'away');
+        $('.users').removeClass('online');
+        $('.users').addClass('offline');
+        $('.users').attr('title', 'away');
         $.each(data, function(key, value){
           if(value !== null && value !== 0){
-            alert(key);
             $('#user-'+key).addClass('online');
-          }
-        });
-      });
-
-      socket.on('updateUserOffline', function(data) {
-        let $user = $('users');
-        $user.addClass('bongo');
-        $user.attr('title', 'away');
-        $.each(data, function(key, value){
-          if(value !== null && value !== 0){
-            alert(key);
-            $('#user-'+key).addClass('offline');
+            $('#user-'+key).removeClass('offline');
           }
         });
       });

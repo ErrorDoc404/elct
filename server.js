@@ -9,14 +9,15 @@ var users = [];
 
 io.on('connection', function (socket)  {
     socket.on('disconnect', () => {
-      var i = users.indexOf('socket.id');
-      users.slice(i, 1, 0);
-      io.emit('updateUserOffline', users);
+      var i = users[socket.id];
+      users.pop(i);
+      io.emit('updateUserStatus', users);
       console.log('user disconnected');
     });
 
     socket.on('user_connected',function(user_id){
-      users[user_id] = socket.id;
+      users[user_id] = socket.id
+      console.log(users);
       io.emit('updateUserStatus', users);
       console.log('user connected '+ user_id);
     });
